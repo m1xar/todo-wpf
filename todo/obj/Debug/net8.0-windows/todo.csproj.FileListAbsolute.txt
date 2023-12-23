@@ -44,3 +44,8 @@ D:\SE\C#\todo\todo\bin\Debug\net8.0-windows\runtimes\win-x64\native\Microsoft.Da
 D:\SE\C#\todo\todo\bin\Debug\net8.0-windows\runtimes\win-x86\native\Microsoft.Data.SqlClient.SNI.dll
 D:\SE\C#\todo\todo\bin\Debug\net8.0-windows\runtimes\win\lib\net6.0\System.Runtime.Caching.dll
 D:\SE\C#\todo\todo\obj\Debug\net8.0-windows\todo.csproj.CopyComplete
+D:\SE\C#\todo\todo\obj\Debug\net8.0-windows\CreateTaskWindow.g.cs
+D:\SE\C#\todo\todo\obj\Debug\net8.0-windows\CreateTaskWindow.baml
+D:\SE\C#\todo\todo\obj\Debug\net8.0-windows\todo.sourcelink.json
+D:\SE\C#\todo\todo\obj\Debug\net8.0-windows\EditTaskWindow.g.cs
+D:\SE\C#\todo\todo\obj\Debug\net8.0-windows\EditTaskWindow.baml

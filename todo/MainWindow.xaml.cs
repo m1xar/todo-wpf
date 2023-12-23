@@ -1,43 +1,61 @@
-﻿using System.Configuration;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using todo;
+﻿using System.Windows;
+
 
 namespace todo
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly string connectionString = "Data Source=MSI;Initial Catalog=todo;Integrated Security=True;Encrypt=False";
-
-        List<Todo_Task> tasks = new List<Todo_Task>();
         public MainWindow()
         {
-            InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Hello WPF!");
+           InitializeComponent();
+           List<Todo_Task> tasks = new List<Todo_Task>();
+           tasks = TodoTask_Repository.Select();
+           TasksGrid.ItemsSource = tasks;
         }
 
         private void addTask(object sender, RoutedEventArgs e)
         {
-            var todotask = new TodoTask_Repository(connectionString);
-            Todo_Task newTask = new Todo_Task();
-            todotask.Delete("Default");
-            tasks = todotask.Select();
-
+            CreateTaskWindow taskWindow = new CreateTaskWindow();
+            taskWindow.TaskCreated += TaskWindow_TaskCreated;
+            taskWindow.Show();
         }
+
+        private void TaskWindow_TaskCreated(object sender, EventArgs e)
+        {
+            refreshGrid();
+        }
+
+        private void refreshGrid()
+        {
+            List<Todo_Task> tasks = new List<Todo_Task>();
+            tasks = TodoTask_Repository.Select();
+            TasksGrid.ItemsSource = tasks;
+            TasksGrid.Items.Refresh();
+        }
+
+        private void edit_Click(object sender, RoutedEventArgs e)
+        {
+            Todo_Task selectedTask = (Todo_Task)TasksGrid.SelectedItem;
+            EditTaskWindow taskWindow = new EditTaskWindow(selectedTask.Name, selectedTask.Description, selectedTask.Time, selectedTask.Priority);
+            taskWindow.TaskEdited += TaskWindow_TaskEdited;
+            taskWindow.Show();
+                        
+        }
+
+        private void TaskWindow_TaskEdited(object sender, EventArgs e)
+        {
+            refreshGrid();
+        }
+
+        private void delete_Click(object sender, RoutedEventArgs e)
+        {
+            Todo_Task selectedTask = (Todo_Task)TasksGrid.SelectedItem;
+            TodoTask_Repository.Delete(selectedTask.Name);
+            refreshGrid();
+        }
+
+
+
     }
 }

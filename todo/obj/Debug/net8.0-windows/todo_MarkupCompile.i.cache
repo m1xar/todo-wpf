@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET8_0;NETCOREAPP
 D:\SE\C#\todo\todo\App.xaml
-11407045341
+3-129843354
 
-91136615589
+11-1401444053
 214-1572829636
-MainWindow.xaml;
+CreateTaskWindow.xaml;EditTaskWindow.xaml;MainWindow.xaml;
 
-False
+True
 

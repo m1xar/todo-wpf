@@ -1,9 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Dapper;
 using System.Data;
 
@@ -11,10 +6,7 @@ namespace todo
 {
     internal class TodoTask_Repository : ITaskRepository
     {
-        string connectionString;
-        public TodoTask_Repository(string connectionString) => this.connectionString = connectionString;
-
-        public void Delete(string name)
+        public static void Delete(string name, string connectionString = "Data Source=MSI;Initial Catalog=todo;Integrated Security=True;Encrypt=False")
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
@@ -22,16 +14,15 @@ namespace todo
             }
         }
 
-        public Todo_Task Get(string name)
+        public static Todo_Task Get(string name, string connectionString = "Data Source=MSI;Initial Catalog=todo;Integrated Security=True;Encrypt=False")
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
                 return db.Query<Todo_Task>("Select from task where name = @name", new { name }).FirstOrDefault();
-
             }
         }
 
-        public void Insert(Todo_Task task)
+        public static void Insert(Todo_Task task, string connectionString = "Data Source=MSI;Initial Catalog=todo;Integrated Security=True;Encrypt=False")
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
@@ -39,19 +30,20 @@ namespace todo
             }
         }
 
-        public List<Todo_Task> Select()
+        public static List<Todo_Task> Select(string connectionString = "Data Source=MSI;Initial Catalog=todo;Integrated Security=True;Encrypt=False")
         {
             using (IDbConnection db = new SqlConnection(connectionString))
             {
-                return db.Query<Todo_Task>("Select * from task").ToList();
+                return db.Query<Todo_Task>("Select * from task Order by Time, Priority").ToList();
             }
         }
 
-        public void Update(Todo_Task task)
+        public static void Update(Todo_Task task, string previousName, string connectionString = "Data Source=MSI;Initial Catalog=todo;Integrated Security=True;Encrypt=False")
         {
+            object[] parameters = { new { Name = task.Name, Description = task.Description, Time = task.Time, Priority = task.Priority, previousName = previousName } };
             using (IDbConnection db = new SqlConnection(connectionString))
             {
-                db.Execute("Update task set Name = @Name, Description = @Description, Priority = @Priority, Time = @Time Where Name = @Name", task);
+                db.Execute("Update task set Name = @Name, Description = @Description, Priority = @Priority, Time = @Time Where Name = @previousName", parameters);
             }
         }
     }
